@@ -13,10 +13,21 @@ public class ControllerAdvisor {
     @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
     @ResponseBody
     public ErrorMessage handleUnsupportedMediaTypeException(UnsupportedMediaTypeException ex) {
-        return new ErrorMessage(HttpStatus.NOT_ACCEPTABLE.value(), ex.getLocalizedMessage());
+        return new ErrorMessage(HttpStatus.NOT_ACCEPTABLE, ex.getLocalizedMessage());
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public ErrorMessage handleUserNotFoundException(UserNotFoundException ex) {
+        return new ErrorMessage(HttpStatus.NOT_FOUND, ex.getLocalizedMessage());
     }
 
     record ErrorMessage(int status, String Message) {
+
+        ErrorMessage(HttpStatus httpStatus, String Message) {
+            this(httpStatus.value(), Message);
+        }
     }
 
 }

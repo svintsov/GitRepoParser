@@ -1,4 +1,4 @@
-package dev.gollund.gitrepoparser;
+package dev.gollund.gitrepoparser.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;

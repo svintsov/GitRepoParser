@@ -1,0 +1,30 @@
+[
+    {
+        "name": "repository1",
+        "ownerName": "ownerName1",
+        "branches": [
+            {
+                "name": "branchName1",
+                "lastCommitSHA": "commit1"
+            },
+            {
+                "name": "branchName2",
+                "lastCommitSHA": "commit2"
+            }
+        ]
+    },
+    {
+        "name": "repository2",
+        "ownerName": "ownerName1",
+        "branches": [
+            {
+                "name": "branchName3",
+                "lastCommitSHA": "commit4"
+            },
+            {
+                "name": "branchName4",
+                "lastCommitSHA": "commit5"
+            }
+        ]
+    }
+]

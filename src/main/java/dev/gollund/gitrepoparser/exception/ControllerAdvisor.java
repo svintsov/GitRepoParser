@@ -23,6 +23,14 @@ public class ControllerAdvisor {
         return new ErrorMessage(HttpStatus.NOT_FOUND, ex.getLocalizedMessage());
     }
 
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseBody
+    public ErrorMessage handleGeneralException(Exception ex) {
+        return new ErrorMessage(HttpStatus.INTERNAL_SERVER_ERROR,
+                "Internal Server Error. Reason: " + ex.getLocalizedMessage());
+    }
+
     record ErrorMessage(int status, String Message) {
 
         ErrorMessage(HttpStatus httpStatus, String Message) {

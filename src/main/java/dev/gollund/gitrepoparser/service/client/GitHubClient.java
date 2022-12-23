@@ -1,5 +1,6 @@
 package dev.gollund.gitrepoparser.service.client;
 
+import com.spotify.github.v3.repos.ImmutableBranch;
 import com.spotify.github.v3.repos.ImmutableRepository;
 import dev.gollund.gitrepoparser.exception.UserNotFoundException;
 import java.util.List;
@@ -20,16 +21,29 @@ public class GitHubClient {
         this.webClient = webClient;
     }
 
-    public Mono<List<ImmutableRepository>> getRepos(String name) {
+    public Mono<List<ImmutableRepository>> getRepos(String username) {
         return webClient.get()
-                .uri(String.format("/users/%s/repos", name))
+                .uri(String.format("/users/%s/repos", username))
                 .exchangeToMono(response -> {
                     if (response.statusCode().equals(HttpStatus.OK)) {
                         return response.bodyToMono(new ParameterizedTypeReference<>() {
                         });
-
                     } else if (response.statusCode().equals(HttpStatus.NOT_FOUND)) {
-                        throw new UserNotFoundException(name);
+                        throw new UserNotFoundException(username);
+                    } else {
+                        return response.createException()
+                                .flatMap(Mono::error);
+                    }
+                });
+    }
+
+    public Mono<List<ImmutableBranch>> getBranches(String owner, String repoName) {
+        return webClient.get()
+                .uri(String.format("/repos/%s/%s/branches", owner, repoName))
+                .exchangeToMono(response -> {
+                    if (response.statusCode().equals(HttpStatus.OK)) {
+                        return response.bodyToMono(new ParameterizedTypeReference<>() {
+                        });
                     } else {
                         return response.createException()
                                 .flatMap(Mono::error);

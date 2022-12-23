@@ -23,6 +23,7 @@ public class GithubRepositoryInfoService implements RepositoryInfoService {
 
     @Override
     public List<UserRepoInfo> getAllReposForUser(String name) {
+        Objects.requireNonNull(name, "Name must not be null to make a call");
         long startTime = System.nanoTime();
         var repos = gitHubClient.getRepos(name)
                 .blockOptional()

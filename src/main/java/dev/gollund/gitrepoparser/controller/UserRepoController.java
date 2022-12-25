@@ -5,6 +5,9 @@ import dev.gollund.gitrepoparser.service.AcceptHeaderValidator;
 import dev.gollund.gitrepoparser.service.GithubRepositoryInfoService;
 import dev.gollund.gitrepoparser.service.HeaderValidator;
 import dev.gollund.gitrepoparser.service.RepositoryInfoService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.util.List;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +28,13 @@ public class UserRepoController {
         this.headerValidator = validator;
     }
 
+    @ApiOperation("A main endpoint for receiving a list of repositories"
+            + " enriched with a basic information about it's branches")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "500", description = "Server error"),
+            @ApiResponse(responseCode = "404", description = "Service not found"),
+            @ApiResponse(responseCode = "406", description = "Invalid Accept header value"),
+            @ApiResponse(responseCode = "200", description = "Successful retrieval")})
     @GetMapping(value = "/{username}")
     public List<UserRepoInfo> getRepositoriesInfo(
             @RequestHeader(HttpHeaders.ACCEPT) String acceptHeader,

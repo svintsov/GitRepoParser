@@ -4,7 +4,8 @@ import com.spotify.github.v3.repos.ImmutableBranch;
 import com.spotify.github.v3.repos.ImmutableRepository;
 import dev.gollund.gitrepoparser.model.BranchInfo;
 import dev.gollund.gitrepoparser.model.UserRepoInfo;
-import dev.gollund.gitrepoparser.service.client.GitHubClient;
+import dev.gollund.gitrepoparser.service.client.GitBranchClient;
+import dev.gollund.gitrepoparser.service.client.GitRepositoryClient;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -15,17 +16,21 @@ import reactor.core.publisher.Mono;
 @Service
 public class GithubRepositoryInfoService implements RepositoryInfoService {
 
-    private final GitHubClient gitHubClient;
+    private final GitRepositoryClient<ImmutableRepository> githubRepositoryClient;
+    private final GitBranchClient<ImmutableBranch> githubBranchClient;
 
-    public GithubRepositoryInfoService(GitHubClient gitHubClient) {
-        this.gitHubClient = gitHubClient;
+    public GithubRepositoryInfoService(
+            GitRepositoryClient<ImmutableRepository> gitHubClient,
+            GitBranchClient<ImmutableBranch> githubBranchClient) {
+        this.githubRepositoryClient = gitHubClient;
+        this.githubBranchClient = githubBranchClient;
     }
 
     @Override
     public List<UserRepoInfo> getAllReposForUser(String name) {
         Objects.requireNonNull(name, "Name must not be null to make a call");
         long startTime = System.nanoTime();
-        var repos = gitHubClient.getRepos(name)
+        var repos = githubRepositoryClient.getRepos(name)
                 .blockOptional()
                 .orElse(Collections.emptyList());
 
@@ -48,7 +53,7 @@ public class GithubRepositoryInfoService implements RepositoryInfoService {
     private Mono<UserRepoInfo> makeCallForBranchesAndFillUserRepoInfo(String login, String name) {
         Objects.requireNonNull(login, "Login must not be null to make a call");
         Objects.requireNonNull(name, "Name must not be null to make a call");
-        return convertToBranchInfo(gitHubClient.getBranches(login, name))
+        return convertToBranchInfo(githubBranchClient.getBranches(login, name))
                 .map(data -> new UserRepoInfo(name, login, data));
     }
 

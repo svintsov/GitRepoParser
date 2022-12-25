@@ -11,7 +11,8 @@ import static org.mockito.Mockito.when;
 import dev.gollund.gitrepoparser.dataProvider.GitResponseDataProvider;
 import dev.gollund.gitrepoparser.dataProvider.OutputDataProvider;
 import dev.gollund.gitrepoparser.model.UserRepoInfo;
-import dev.gollund.gitrepoparser.service.client.GitHubClient;
+import dev.gollund.gitrepoparser.service.client.impl.GithubBranchClient;
+import dev.gollund.gitrepoparser.service.client.impl.GithubRepositoryClient;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -26,7 +27,9 @@ import reactor.core.publisher.Mono;
 class GithubRepositoryInfoServiceTest {
 
     @Mock
-    GitHubClient client;
+    GithubRepositoryClient repositoryClient;
+    @Mock
+    GithubBranchClient branchClient;
     @InjectMocks
     GithubRepositoryInfoService underTest;
 
@@ -35,9 +38,9 @@ class GithubRepositoryInfoServiceTest {
         var username = "octocat";
         var expectedResult = OutputDataProvider.readOutputData();
 
-        when(client.getRepos(username))
+        when(repositoryClient.getRepos(username))
                 .thenReturn(Mono.just(GitResponseDataProvider.readRepoOutputData()));
-        when(client.getBranches("octocat", "Hello-World"))
+        when(branchClient.getBranches("octocat", "Hello-World"))
                 .thenReturn(Mono.just(GitResponseDataProvider.readBranchOutputData()));
 
         List<UserRepoInfo> result = underTest.getAllReposForUser(username);
@@ -49,22 +52,22 @@ class GithubRepositoryInfoServiceTest {
     @Test
     void whenExistingUserButNoReposThenReturnEmptyList() {
         var username = "octocat";
-        when(client.getRepos(username))
+        when(repositoryClient.getRepos(username))
                 .thenReturn(Mono.just(Collections.emptyList()));
 
         List<UserRepoInfo> result = underTest.getAllReposForUser(username);
 
         assertTrue(result.isEmpty());
-        verify(client, never()).getBranches(anyString(), anyString());
+        verify(branchClient, never()).getBranches(anyString(), anyString());
     }
 
     @Test
     void whenExistingUserHasReposButFetchingBranchesFailsThenThrowException() {
         var username = "octocat";
 
-        when(client.getRepos(username))
+        when(repositoryClient.getRepos(username))
                 .thenReturn(Mono.just(GitResponseDataProvider.readRepoOutputData()));
-        when(client.getBranches("octocat", "Hello-World"))
+        when(branchClient.getBranches("octocat", "Hello-World"))
                 .thenThrow(WebClientResponseException.class);
 
         assertThrows(WebClientResponseException.class,

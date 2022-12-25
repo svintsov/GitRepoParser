@@ -10,6 +10,7 @@ import java.util.List;
 import org.apache.hc.core5.http.HttpStatus;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 
@@ -52,5 +53,10 @@ public class BaseIntegrationTest {
     @AfterAll
     static void teardown() {
         wireMockServer.stop();
+    }
+
+    @BeforeEach
+    public void setUp() {
+        wireMockServer.resetAll();
     }
 }

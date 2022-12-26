@@ -11,6 +11,7 @@ is necessary. You run it using the ```java -jar``` command.
 * Clone this repository
 * Make sure you are using JDK 17 and Maven 3.x
 * You can build the project and run the tests by running ```mvn clean package```
+* Obtain the secret token. Refer to [GitHub App Authentication Guide](https://developer.github.com/apps/building-github-apps/authenticating-with-github-apps/) for more information.
 * Once successfully built, you can run the service by one of these two methods:
 
 ```

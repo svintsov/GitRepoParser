@@ -27,11 +27,11 @@ import reactor.core.publisher.Mono;
 class GithubRepositoryInfoServiceTest {
 
     @Mock
-    GithubRepositoryClient repositoryClient;
+    private GithubRepositoryClient repositoryClient;
     @Mock
-    GithubBranchClient branchClient;
+    private GithubBranchClient branchClient;
     @InjectMocks
-    GithubRepositoryInfoService underTest;
+    private GithubRepositoryInfoService underTest;
 
     @Test
     void whenExistingUserThenReturnListOfRepoBranchInfo() {

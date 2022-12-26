@@ -15,7 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 
 @SpringBootTest
-public class BaseIntegrationTest {
+public abstract class BaseIntegrationTest {
 
     protected static WireMockServer wireMockServer;
 
@@ -56,7 +56,7 @@ public class BaseIntegrationTest {
     }
 
     @BeforeEach
-    public void setUp() {
+    protected void setUp() {
         wireMockServer.resetAll();
     }
 }

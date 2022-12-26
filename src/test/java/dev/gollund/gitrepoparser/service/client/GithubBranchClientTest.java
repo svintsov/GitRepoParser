@@ -17,7 +17,7 @@ import reactor.test.StepVerifier;
 public class GithubBranchClientTest extends BaseIntegrationTest {
 
     @Autowired
-    GithubBranchClient underTest;
+    private GithubBranchClient underTest;
 
     @Test
     void whenBranchesExistThenReturnCollection() {

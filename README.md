@@ -5,7 +5,7 @@ starter for creating a microservice capable of fetching various data from Git re
 
 ## How to Run
 
-This application is packaged as a jar which has Tomcat 10 embedded. No Tomcat or JBoss installation
+This application is packaged as a jar which has Tomcat 9 embedded. No Tomcat or JBoss installation
 is necessary. You run it using the ```java -jar``` command.
 
 * Clone this repository
@@ -14,32 +14,41 @@ is necessary. You run it using the ```java -jar``` command.
 * Once successfully built, you can run the service by one of these two methods:
 
 ```
-        java -jar -Dsecurity.token={paste_your_token_here} target/GitRepoParser-1.0.0.jar
+        java -jar -Dsecurity.token={paste_your_token_here} target/git-repo-parser.jar
 or
         mvn spring-boot:run -Drun.arguments="security.token={paste_your_token_here}"
 ```
 
+## Docker
+
+Also, the service could be packaged as Docker image and later you run it using ```docker run``` command.
+
+```
+docker run --env ACCESS_TOKEN={paste_your_token_here} {image_id}   
+```
+
 ## About the Service
 
-The service is just a simple Github repository parser REST service. It main and so far the only
-feature is to fetch all public repositories for user and for each repository the list of branches.
+The service is just a simple REST Github repository parser. It main and so far the only
+feature is to fetch all public repositories for user that are not fork and for each repository retrieve the list of branches.
 
 Here is what this little application demonstrates:
 
 * Full integration with the latest **Spring** Framework: inversion of control, dependency injection,
   etc.
-* Writing a RESTful service using annotation: supports JSON request / response
 * Exception mapping from application exceptions to the right HTTP response with exception details in
   the body
-* Demonstrates MockMVC test framework with associated libraries
-* APIs are "self-documented" by Swagger2 using annotations
+* MockMVC test framework with associated libraries
+* Calls to Github API with a help of WebClient
+* Processing API responses in a reactive way
+* APIs are "self-documented" by Swagger3 using annotations
 
 Here are some endpoints you can call:
 
 ### Retrieve a list of public repositories for user
 
 ```
-GET http://localhost:8080/repositories/svintsov
+GET http://localhost:8080/repositories/danvega
 Accept: application/json
 
 Response: HTTP 200
@@ -57,9 +66,9 @@ Content: [
 ]
 ```
 
-### To view Swagger 2 API docs
+### To view Swagger 3 API docs
 
-Run the server and browse to localhost:8080/swagger-ui.html
+Run the server and browse to http://localhost:8080/swagger-ui/index.html
 
 #### Questions and Comments: svintcov95@gmail.com
 

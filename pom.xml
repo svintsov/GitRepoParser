@@ -4,7 +4,25 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <name>git-repo-parser</name>
+  <description>GitRepoParser</description>
+  <groupId>dev.gollund</groupId>
   <artifactId>git-repo-parser</artifactId>
+  <version>1.0.0</version>
+
+  <parent>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <groupId>org.springframework.boot</groupId>
+    <relativePath/>
+    <version>2.7.5</version> <!-- lookup parent from repository -->
+  </parent>
+
+  <properties>
+    <java.version>17</java.version>
+    <start-class>dev.gollund.gitrepoparser.GitRepoParserApplication</start-class>
+  </properties>
+
+
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -60,8 +78,7 @@
       <version>3.2.3.RELEASE</version>
     </dependency>
   </dependencies>
-  <description>GitRepoParser</description>
-  <groupId>dev.gollund</groupId>
+
   <build>
     <finalName>${project.artifactId}</finalName>
     <plugins>
@@ -75,20 +92,5 @@
       </plugin>
     </plugins>
   </build>
-  <parent>
-    <artifactId>spring-boot-starter-parent</artifactId>
-    <groupId>org.springframework.boot</groupId>
-    <relativePath/>
-    <version>2.7.5</version> <!-- lookup parent from repository -->
-  </parent>
-  <name>git-repo-parser</name>
-
-  <version>0.0.1-SNAPSHOT</version>
-
-
-  <properties>
-    <java.version>17</java.version>
-    <start-class>dev.gollund.gitrepoparser.GitRepoParserApplication</start-class>
-  </properties>
 
 </project>
